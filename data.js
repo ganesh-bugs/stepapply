@@ -11,7 +11,7 @@ window.STEP_DATA = {
   states: [
     { name: "Andhra Pradesh", url: "https://docs.google.com/forms/d/e/1FAIpQLSdZo-HGIBQHAH4-XAByWj3fg6S_NyN7S_K0An0ZiUoYutKylQ/viewform", open: false },
     { name: "Delhi", url: "", open: false },
-    { name: "Kerala", url: "https://forms.gle/EyhjkSA1FYp4Ud518", open: false },
+    { name: "Kerala", url: "https://forms.gle/EyhjkSA1FYp4Ud518", open: true },
     { name: "Maharashtra", url: "", open: false },
     { name: "Odisha", url: "", open: false },
     { name: "Telangana", url: "", open: false },
