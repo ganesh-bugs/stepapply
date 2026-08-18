@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STEP Apply — Admin</title>
+<style>
+  body { margin: 0; font-family: system-ui, sans-serif; background: #f3f2f2; color: #201e1d; }
+  main { max-width: 720px; margin: 0 auto; padding: 32px 20px 80px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  p.hint { color: #6b6866; margin: 0 0 28px; font-size: 0.92rem; }
+  fieldset { border: 2px solid #201e1d; padding: 16px; margin-bottom: 20px; }
+  legend { font-weight: 700; padding: 0 8px; }
+  label { display: block; font-size: 0.85rem; font-weight: 600; margin: 10px 0 4px; }
+  input[type=text], textarea { width: 100%; box-sizing: border-box; padding: 8px 10px; font-size: 0.95rem; border: 1px solid #999; font-family: inherit; }
+  textarea { resize: vertical; min-height: 60px; }
+  .state-block { border: 1px solid #ccc; padding: 12px; margin-bottom: 10px; background: #fff; }
+  .state-header { display: flex; justify-content: space-between; align-items: center; }
+  .state-header strong { font-size: 1rem; }
+  .row { display: flex; gap: 16px; align-items: center; margin-top: 8px; }
+  .row label { margin: 0; display: flex; align-items: center; gap: 6px; font-weight: 500; }
+  button { font-family: inherit; font-weight: 700; padding: 10px 20px; border: none; cursor: pointer; }
+  #genBtn { background: #1f7d72; color: #fff; font-size: 1rem; margin-top: 10px; }
+  #genBtn:hover { background: #16645c; }
+  #addStateBtn { background: #e3f1ef; color: #0a3733; margin-bottom: 16px; }
+  #removeBtn { background: #f3d0d0; color: #7a232a; font-size: 0.8rem; padding: 4px 10px; }
+  #output { margin-top: 24px; }
+  #output textarea { min-height: 320px; font-family: monospace; font-size: 0.82rem; background: #201e1d; color: #e3f1ef; }
+  .copy-note { font-size: 0.85rem; color: #6b6866; margin-top: 6px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>STEP Apply — Admin</h1>
+  <p class="hint">Edit batch number, eligibility text, and each state's form link below, then click "Generate data.js". Download the file and replace <code>data.js</code> in the GitHub repo (commit/upload it) — the live site updates automatically.</p>
+
+  <fieldset>
+    <legend>General</legend>
+    <label for="batch">Batch number</label>
+    <input type="text" id="batch">
+    <label for="elig">Eligibility text</label>
+    <textarea id="elig"></textarea>
+  </fieldset>
+
+  <fieldset>
+    <legend>States</legend>
+    <div id="statesList"></div>
+    <button id="addStateBtn" type="button">+ Add state</button>
+  </fieldset>
+
+  <button id="genBtn" type="button">Generate data.js</button>
+
+  <div id="output" style="display:none;">
+    <label>Copy this into <code>data.js</code>:</label>
+    <textarea id="outText" readonly></textarea>
+    <p class="copy-note">Or click below to download the file directly.</p>
+    <button id="downloadBtn" type="button" style="background:#0a3733; color:#fff;">Download data.js</button>
+  </div>
+</main>
+<script src="data.js"></script>
+<script>
+  var initial = window.STEP_DATA || { batch: 13, eligibility: '', states: [] };
+  var stateCount = 0;
+
+  function addStateRow(s) {
+    s = s || { name: '', url: '', open: true };
+    var id = 'state_' + (stateCount++);
+    var block = document.createElement('div');
+    block.className = 'state-block';
+    block.dataset.id = id;
+    block.innerHTML =
+      '<div class="state-header"><input type="text" class="s-name" placeholder="State name" value="' + (s.name || '').replace(/"/g, '&quot;') + '" style="font-weight:700; border:none; border-bottom:1px solid #ccc; flex:1; margin-right:8px;">' +
+      '<button type="button" class="removeBtn" style="background:#f3d0d0; color:#7a232a; font-size:0.8rem; padding:4px 10px; border:none; cursor:pointer;">Remove</button></div>' +
+      '<label>Google Form link (leave blank for "Coming soon")</label>' +
+      '<input type="text" class="s-url" placeholder="https://docs.google.com/forms/..." value="' + (s.url || '').replace(/"/g, '&quot;') + '">' +
+      '<div class="row"><label><input type="checkbox" class="s-open"' + (s.open !== false ? ' checked' : '') + '> Open (uncheck to mark as "Closed" once a link exists)</label></div>';
+    block.querySelector('.removeBtn').addEventListener('click', function () { block.remove(); });
+    document.getElementById('statesList').appendChild(block);
+  }
+
+  document.getElementById('batch').value = initial.batch;
+  document.getElementById('elig').value = initial.eligibility || '';
+  (initial.states || []).forEach(addStateRow);
+
+  document.getElementById('addStateBtn').addEventListener('click', function () { addStateRow(); });
+
+  function buildData() {
+    var batch = document.getElementById('batch').value.trim();
+    var elig = document.getElementById('elig').value;
+    var blocks = document.querySelectorAll('.state-block');
+    var states = [];
+    blocks.forEach(function (b) {
+      var name = b.querySelector('.s-name').value.trim();
+      if (!name) return;
+      var url = b.querySelector('.s-url').value.trim();
+      var open = b.querySelector('.s-open').checked;
+      states.push({ name: name, url: url, open: open });
+    });
+    return { batch: batch, eligibility: elig, states: states };
+  }
+
+  function toDataJs(data) {
+    var lines = [];
+    lines.push('// STEP Apply — editable data file.');
+    lines.push('// To update: change the batch number, or set/replace a state\'s "url".');
+    lines.push('// - url: "" (empty) shows the state as "Coming soon" (grayed, not clickable)');
+    lines.push('// - url: a Google Form link, open: true  -> shows "Apply now" (clickable, accent button)');
+    lines.push('// - url: a Google Form link, open: false -> shows "Closed" (grayed, not clickable)');
+    lines.push('// Generated by admin.html — save this file and commit/upload it to GitHub.');
+    lines.push('');
+    lines.push('window.STEP_DATA = {');
+    lines.push('  batch: ' + JSON.stringify(data.batch) + ',');
+    lines.push('  eligibility: ' + JSON.stringify(data.eligibility) + ',');
+    lines.push('  states: [');
+    lines.push(data.states.map(function (s) {
+      return '    { name: ' + JSON.stringify(s.name) + ', url: ' + JSON.stringify(s.url) + ', open: ' + (s.open ? 'true' : 'false') + ' }';
+    }).join(',\n'));
+    lines.push('  ]');
+    lines.push('};');
+    return lines.join('\n');
+  }
+
+  document.getElementById('genBtn').addEventListener('click', function () {
+    var text = toDataJs(buildData());
+    document.getElementById('outText').value = text;
+    document.getElementById('output').style.display = 'block';
+  });
+
+  document.getElementById('downloadBtn').addEventListener('click', function () {
+    var text = toDataJs(buildData());
+    var blob = new Blob([text], { type: 'text/javascript' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'data.js';
+    a.click();
+  });
+</script>
+</body>
+</html>
