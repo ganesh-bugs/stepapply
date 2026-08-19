@@ -7,9 +7,9 @@
 
 window.STEP_DATA = {
   batch: "13",
-  eligibility: "This programme is only for the final year students of Polytechnic Diploma.",
+  eligibility: "This programme is only for the final year students of Polytechnic Diploma. Students from Computer, IT and related branches only can apply for this programme.",
   states: [
-    { name: "Andhra Pradesh", url: "https://docs.google.com/forms/d/e/1FAIpQLSdZo-HGIBQHAH4-XAByWj3fg6S_NyN7S_K0An0ZiUoYutKylQ/viewform", open: false },
+    { name: "Andhra Pradesh", url: "", open: false },
     { name: "Delhi", url: "", open: false },
     { name: "Kerala", url: "https://forms.gle/EyhjkSA1FYp4Ud518", open: true },
     { name: "Maharashtra", url: "", open: false },
@@ -17,6 +17,6 @@ window.STEP_DATA = {
     { name: "Telangana", url: "", open: false },
     { name: "Uttar Pradesh", url: "", open: false },
     { name: "Uttarakhand", url: "", open: false },
-    { name: "West Bengal", url: "https://docs.google.com/forms/d/e/1FAIpQLScgE63AnI8kaJQbZqCYPYY2DJyS1wcui0efQY2MvW7sU3K2Rg/closedform", open: false }
+    { name: "West Bengal", url: "", open: false }
   ]
 };
