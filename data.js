@@ -7,7 +7,7 @@
 
 window.STEP_DATA = {
   batch: "13",
-  eligibility: "This programme is only for the final year students of Polytechnic Diploma. Students from Computer, IT and related branches only can apply for this programme.",
+  eligibility: "This programme is only for the final year students of Polytechnic Diploma.",
   states: [
     { name: "Andhra Pradesh", url: "", open: false },
     { name: "Delhi", url: "", open: false },
