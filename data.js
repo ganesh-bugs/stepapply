@@ -17,6 +17,6 @@ window.STEP_DATA = {
     { name: "Telangana", url: "", open: false },
     { name: "Uttar Pradesh", url: "", open: false },
     { name: "Uttarakhand", url: "", open: false },
-    { name: "West Bengal", url: "", open: false }
+    { name: "West Bengal", url: "https://forms.gle/w6drjYUfgQ2ymZMK7", open: true }
   ]
 };
