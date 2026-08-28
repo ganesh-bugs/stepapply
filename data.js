@@ -11,12 +11,12 @@ window.STEP_DATA = {
   states: [
     { name: "Andhra Pradesh", url: "", open: false },
     { name: "Delhi", url: "", open: false },
-    { name: "Kerala", url: "https://forms.gle/EyhjkSA1FYp4Ud518", open: true },
+    { name: "Kerala", url: "https://forms.gle/EyhjkSA1FYp4Ud518", open: false },
     { name: "Maharashtra", url: "", open: false },
     { name: "Odisha", url: "", open: false },
     { name: "Telangana", url: "", open: false },
     { name: "Uttar Pradesh", url: "", open: false },
     { name: "Uttarakhand", url: "", open: false },
-    { name: "West Bengal", url: "https://forms.gle/w6drjYUfgQ2ymZMK7", open: true }
+    { name: "West Bengal", url: "https://forms.gle/w6drjYUfgQ2ymZMK7", open: false }
   ]
 };
