@@ -9,7 +9,7 @@ window.STEP_DATA = {
   batch: "13",
   eligibility: "This programme is only for the final year students of Polytechnic Diploma.",
   states: [
-    { name: "Andhra Pradesh", url: "", open: false },
+    { name: "Andhra Pradesh", url: "https://forms.gle/cGpEw2C4RvJwYS4aA", open: true },
     { name: "Delhi", url: "", open: false },
     { name: "Kerala", url: "https://forms.gle/EyhjkSA1FYp4Ud518", open: false },
     { name: "Maharashtra", url: "", open: false },
