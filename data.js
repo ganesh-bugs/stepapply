@@ -14,7 +14,7 @@ window.STEP_DATA = {
     { name: "Kerala", url: "https://forms.gle/EyhjkSA1FYp4Ud518", open: false },
     { name: "Maharashtra", url: "", open: false },
     { name: "Odisha", url: "", open: false },
-    { name: "Telangana", url: "", open: false },
+    { name: "Telangana", url: "https://forms.gle/HBYK5gmMu5FKBHC96", open: true },
     { name: "Uttar Pradesh", url: "https://forms.gle/z2QeU7znrJ1s2PTR8", open: false },
     { name: "Uttarakhand", url: "", open: false },
     { name: "West Bengal", url: "https://forms.gle/w6drjYUfgQ2ymZMK7", open: false }
